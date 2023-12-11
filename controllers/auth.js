@@ -35,6 +35,7 @@ export const register = async (req, res) => {
         const savedUser = await newUser.save();
         res.status(201).json(savedUser);
     } catch (err) {
+        console.log(err.message);
         res.status(500).json({ error: err.message });
     }
 };
@@ -49,10 +50,11 @@ export const login = async (req, res) => {
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) return res.status(400).json({ msg: "Invalid credentials. " });
 
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+        const token = jwt.sign({ id: user._id }, "superhardstringtoguess");
         delete user.password;
         res.status(200).json({ token, user });
     } catch (err) {
+        console.log(err.message);
         res.status(500).json({ error: err.message });
     }
 };
