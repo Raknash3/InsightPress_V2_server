@@ -60,4 +60,23 @@ export const addRemoveFriend = async (req, res) => {
     } catch (err) {
         res.status(404).json({ message: err.message });
     }
+
+};
+
+
+export const updateUser = async (req, res) => {
+    const { id } = req.params;
+    const { firstName, lastName, occupation, location } = req.body;
+
+    console.log('updateUser request', { id, firstName, lastName, occupation, location }); // log the request data
+
+    try {
+        const updatedUser = await User.findByIdAndUpdate(id, { firstName, lastName, occupation, location }, { new: true });
+        res.json(updatedUser);
+        console.log('updatedUser', updatedUser); // log the updated user data
+
+    } catch (error) {
+        console.error('updateUser error', error); // log any errors
+        res.status(500).json({ message: error.message });
+    }
 };
